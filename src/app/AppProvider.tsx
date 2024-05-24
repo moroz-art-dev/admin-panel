@@ -1,10 +1,11 @@
-import {AppProviderProps} from '@models/AppProviderProps';
+import ResourceLoader from '@components/common/ResourceLoader';
 import {ThemeProvider} from '@mui/material/styles';
 import {configureStore} from '@reduxjs/toolkit';
 import theme from '@theme/theme';
 import React from 'react';
 import {Provider} from 'react-redux';
 
+import {AppProviderProps} from './AppProviderProps';
 import rootReducer from './store/rootReducer';
 
 const store = configureStore({
@@ -13,9 +14,11 @@ const store = configureStore({
 
 const AppProvider: React.FC<AppProviderProps> = ({children}) => {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </Provider>
+    <ResourceLoader>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </Provider>
+    </ResourceLoader>
   );
 };
 
