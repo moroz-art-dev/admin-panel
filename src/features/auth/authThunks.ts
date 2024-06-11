@@ -1,6 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {User, LoginCredentials, RegisterCredentials} from './authTypes';
-import authService from '@api/userAuthService';
+import {
+  User,
+  LoginCredentials,
+  RegisterCredentials,
+} from '@features/auth/authTypes';
+import {sendRequest} from '@api/userAuthService';
 
 export const register = createAsyncThunk<
   User,
@@ -8,7 +12,7 @@ export const register = createAsyncThunk<
   {rejectValue: string}
 >('auth/register', async (credentials, {rejectWithValue}) => {
   try {
-    return await authService.register(credentials);
+    return await sendRequest('/register', 'POST', credentials);
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
@@ -20,7 +24,7 @@ export const login = createAsyncThunk<
   {rejectValue: string}
 >('auth/login', async (credentials, {rejectWithValue}) => {
   try {
-    return await authService.login(credentials);
+    return await sendRequest('/login', 'POST', credentials);
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
@@ -32,7 +36,7 @@ export const forgotPassword = createAsyncThunk<
   {rejectValue: string}
 >('auth/forgotPassword', async (email, {rejectWithValue}) => {
   try {
-    await authService.forgotPassword(email);
+    await sendRequest('/forgot-password', 'POST', {email});
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
